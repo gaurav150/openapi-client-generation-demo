@@ -968,6 +968,16 @@ components:
         image:
           type: string
           format: uri
+        rating:
+          "$ref": "#/components/schemas/Rating"
+    Rating:
+      type: object
+      properties:
+        rate:
+          type: number
+          format: float
+        count:
+          type: integer
     Cart:
       type: object
       properties:

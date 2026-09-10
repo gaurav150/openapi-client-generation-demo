@@ -22,6 +22,7 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
+import org.openapitools.client.model.Rating;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -50,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * Product
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-10T22:30:08.211429+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-11T04:35:52.547503+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
 public class Product {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -81,6 +82,11 @@ public class Product {
   @SerializedName(SERIALIZED_NAME_IMAGE)
   @javax.annotation.Nullable
   private URI image;
+
+  public static final String SERIALIZED_NAME_RATING = "rating";
+  @SerializedName(SERIALIZED_NAME_RATING)
+  @javax.annotation.Nullable
+  private Rating rating;
 
   public Product() {
   }
@@ -199,6 +205,25 @@ public class Product {
   }
 
 
+  public Product rating(@javax.annotation.Nullable Rating rating) {
+    this.rating = rating;
+    return this;
+  }
+
+  /**
+   * Get rating
+   * @return rating
+   */
+  @javax.annotation.Nullable
+  public Rating getRating() {
+    return rating;
+  }
+
+  public void setRating(@javax.annotation.Nullable Rating rating) {
+    this.rating = rating;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -214,12 +239,13 @@ public class Product {
         Objects.equals(this.price, product.price) &&
         Objects.equals(this.description, product.description) &&
         Objects.equals(this.category, product.category) &&
-        Objects.equals(this.image, product.image);
+        Objects.equals(this.image, product.image) &&
+        Objects.equals(this.rating, product.rating);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, price, description, category, image);
+    return Objects.hash(id, title, price, description, category, image, rating);
   }
 
   @Override
@@ -232,6 +258,7 @@ public class Product {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("    image: ").append(toIndentedString(image)).append("\n");
+    sb.append("    rating: ").append(toIndentedString(rating)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -250,7 +277,7 @@ public class Product {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "title", "price", "description", "category", "image"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "title", "price", "description", "category", "image", "rating"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -288,6 +315,10 @@ public class Product {
       }
       if ((jsonObj.get("image") != null && !jsonObj.get("image").isJsonNull()) && !jsonObj.get("image").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `image` to be a primitive type in the JSON string but got `%s`", jsonObj.get("image").toString()));
+      }
+      // validate the optional field `rating`
+      if (jsonObj.get("rating") != null && !jsonObj.get("rating").isJsonNull()) {
+        Rating.validateJsonElement(jsonObj.get("rating"));
       }
   }
 

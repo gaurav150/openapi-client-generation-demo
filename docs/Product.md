@@ -13,6 +13,7 @@
 |**description** | **String** |  |  [optional] |
 |**category** | **String** |  |  [optional] |
 |**image** | **URI** |  |  [optional] |
+|**rating** | [**Rating**](Rating.md) |  |  [optional] |
 
 
 
