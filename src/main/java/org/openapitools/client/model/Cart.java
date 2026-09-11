@@ -20,10 +20,11 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.client.model.Product;
+import org.openapitools.client.model.CartProduct;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,7 +53,7 @@ import org.openapitools.client.JSON;
 /**
  * Cart
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-10T22:30:08.211429+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-11T14:59:12.878840+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
 public class Cart {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -64,10 +65,20 @@ public class Cart {
   @javax.annotation.Nullable
   private Integer userId;
 
+  public static final String SERIALIZED_NAME_DATE = "date";
+  @SerializedName(SERIALIZED_NAME_DATE)
+  @javax.annotation.Nullable
+  private OffsetDateTime date;
+
   public static final String SERIALIZED_NAME_PRODUCTS = "products";
   @SerializedName(SERIALIZED_NAME_PRODUCTS)
   @javax.annotation.Nullable
-  private List<Product> products = new ArrayList<>();
+  private List<CartProduct> products = new ArrayList<>();
+
+  public static final String SERIALIZED_NAME_V = "__v";
+  @SerializedName(SERIALIZED_NAME_V)
+  @javax.annotation.Nullable
+  private Integer v;
 
   public Cart() {
   }
@@ -110,12 +121,31 @@ public class Cart {
   }
 
 
-  public Cart products(@javax.annotation.Nullable List<Product> products) {
+  public Cart date(@javax.annotation.Nullable OffsetDateTime date) {
+    this.date = date;
+    return this;
+  }
+
+  /**
+   * Get date
+   * @return date
+   */
+  @javax.annotation.Nullable
+  public OffsetDateTime getDate() {
+    return date;
+  }
+
+  public void setDate(@javax.annotation.Nullable OffsetDateTime date) {
+    this.date = date;
+  }
+
+
+  public Cart products(@javax.annotation.Nullable List<CartProduct> products) {
     this.products = products;
     return this;
   }
 
-  public Cart addProductsItem(Product productsItem) {
+  public Cart addProductsItem(CartProduct productsItem) {
     if (this.products == null) {
       this.products = new ArrayList<>();
     }
@@ -128,12 +158,31 @@ public class Cart {
    * @return products
    */
   @javax.annotation.Nullable
-  public List<Product> getProducts() {
+  public List<CartProduct> getProducts() {
     return products;
   }
 
-  public void setProducts(@javax.annotation.Nullable List<Product> products) {
+  public void setProducts(@javax.annotation.Nullable List<CartProduct> products) {
     this.products = products;
+  }
+
+
+  public Cart v(@javax.annotation.Nullable Integer v) {
+    this.v = v;
+    return this;
+  }
+
+  /**
+   * Get v
+   * @return v
+   */
+  @javax.annotation.Nullable
+  public Integer getV() {
+    return v;
+  }
+
+  public void setV(@javax.annotation.Nullable Integer v) {
+    this.v = v;
   }
 
 
@@ -149,12 +198,14 @@ public class Cart {
     Cart cart = (Cart) o;
     return Objects.equals(this.id, cart.id) &&
         Objects.equals(this.userId, cart.userId) &&
-        Objects.equals(this.products, cart.products);
+        Objects.equals(this.date, cart.date) &&
+        Objects.equals(this.products, cart.products) &&
+        Objects.equals(this.v, cart.v);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, products);
+    return Objects.hash(id, userId, date, products, v);
   }
 
   @Override
@@ -163,7 +214,9 @@ public class Cart {
     sb.append("class Cart {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    date: ").append(toIndentedString(date)).append("\n");
     sb.append("    products: ").append(toIndentedString(products)).append("\n");
+    sb.append("    v: ").append(toIndentedString(v)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -182,7 +235,7 @@ public class Cart {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "userId", "products"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "userId", "date", "products", "__v"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -219,7 +272,7 @@ public class Cart {
 
           // validate the optional field `products` (array)
           for (int i = 0; i < jsonArrayproducts.size(); i++) {
-            Product.validateJsonElement(jsonArrayproducts.get(i));
+            CartProduct.validateJsonElement(jsonArrayproducts.get(i));
           };
         }
       }

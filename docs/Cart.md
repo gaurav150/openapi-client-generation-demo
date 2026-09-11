@@ -9,7 +9,9 @@
 |------------ | ------------- | ------------- | -------------|
 |**id** | **Integer** |  |  [optional] |
 |**userId** | **Integer** |  |  [optional] |
-|**products** | [**List&lt;Product&gt;**](Product.md) |  |  [optional] |
+|**date** | **OffsetDateTime** |  |  [optional] |
+|**products** | [**List&lt;CartProduct&gt;**](CartProduct.md) |  |  [optional] |
+|**v** | **Integer** |  |  [optional] |
 
 
 

@@ -985,10 +985,23 @@ components:
           type: integer
         userId:
           type: integer
+        date:
+          type: string
+          format: date-time
         products:
           type: array
           items:
-            "$ref": "#/components/schemas/Product"
+            "$ref": "#/components/schemas/CartProduct"
+        __v:
+          type: integer
+
+    CartProduct:
+      type: object
+      properties:
+        productId:
+          type: integer
+        quantity:
+          type: integer
     User:
       type: object
       properties:
