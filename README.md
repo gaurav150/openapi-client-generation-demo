@@ -944,3 +944,202 @@ Assertions and Test Results
 The API client is generated from the OpenAPI specification rather than manually implemented, while the custom TestNG layer demonstrates how the generated client can be consumed for API automation.
 
 This approach satisfies the core objective of demonstrating **OpenAPI-driven API client generation and test automation**.
+
+## OpenAPI Client Generation & Git Workflow
+
+```text
+                    ┌──────────────────────────────┐
+                    │ Analyze Actual API Response  │
+                    │                              │
+                    │ Identify missing/incorrect   │
+                    │ fields in the API response   │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │ Update YAML Schema            │
+                    │                              │
+                    │ Modify fakeStoreAPI.yml      │
+                    │ to match the actual API     │
+                    │ request/response structure   │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │ Generate Java Client          │
+                    │                              │
+                    │ openapi-generator generate   │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │ Review Generated Changes     │
+                    │                              │
+                    │ git status                  │
+                    │ git diff                    │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │ Remove Unrelated Changes    │
+                    │                              │
+                    │ git restore <files>         │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                    ┌──────────────────────────────┐
+                    │ Run API Tests                │
+                    │                              │
+                    │ mvn -Dtest=... test         │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
+                           ┌───────────────┐
+                           │ Tests Pass?   │
+                           └───────┬───────┘
+                              Yes │ No
+                                  │
+                     ┌────────────┘
+                     │
+                     │ No → Fix YAML / Code
+                     │          │
+                     │          └──→ Run Tests Again
+                     │
+                     ▼
+             ┌─────────────────────────┐
+             │ Stage Changes           │
+             │                         │
+             │ git add <files>         │
+             └────────────┬────────────┘
+                          │
+                          ▼
+             ┌─────────────────────────┐
+             │ Review Staged Changes   │
+             │                         │
+             │ git diff --cached       │
+             └────────────┬────────────┘
+                          │
+                          ▼
+             ┌─────────────────────────┐
+             │ Commit Changes          │
+             │                         │
+             │ git commit -m "..."     │
+             └────────────┬────────────┘
+                          │
+                          ▼
+             ┌─────────────────────────┐
+             │ Push to GitHub          │
+             │                         │
+             │ git push                │
+             └─────────────────────────┘
+```
+
+### Step 1: Update the YAML Schema
+
+Before generating the Java client, **compare the actual API response with the OpenAPI YAML schema**.
+
+If the actual API response contains fields that are missing from the YAML schema, update:
+
+```text
+fakeStoreAPI.yml
+```
+
+For example, if the API returns:
+
+```json
+{
+  "id": 1,
+  "username": "johnd",
+  "email": "john@example.com",
+  "phone": "1-570-236-7033",
+  "name": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "address": {
+    "city": "kilcoole",
+    "street": "new road",
+    "number": 7682,
+    "zipcode": "12926-3874",
+    "geolocation": {
+      "lat": "-37.3159",
+      "long": "81.1496"
+    }
+  },
+  "__v": 0
+}
+```
+
+The corresponding schemas should be defined in `fakeStoreAPI.yml`.
+
+### Step 2: Generate the Java Client
+
+After updating the YAML schema:
+
+```bash
+openapi-generator generate \
+  -i fakeStoreAPI.yml \
+  -g java \
+  -o . \
+  --skip-validate-spec
+```
+
+### Step 3: Review Generated Changes
+
+```bash
+git status
+```
+
+```bash
+git --no-pager diff --stat
+```
+
+Review important generated files:
+
+```bash
+git --no-pager diff -- src/main/java/org/openapitools/client/model/User.java
+```
+
+### Step 4: Run Tests
+
+Run the specific test:
+
+```bash
+mvn -Dtest=FakeStoreUsersTest test
+```
+
+Then run the complete suite:
+
+```bash
+mvn test
+```
+
+### Step 5: Stage and Review
+
+```bash
+git add <files>
+```
+
+Review staged changes:
+
+```bash
+git --no-pager diff --cached --stat
+```
+
+```bash
+git --no-pager diff --cached
+```
+
+### Step 6: Commit
+
+```bash
+git commit -m "Update User model for FakeStore API response"
+```
+
+### Step 7: Push
+
+```bash
+git push
+```
+
+> **Important:** The YAML schema should be updated first. The generated Java client should be treated as a result of the OpenAPI specification, not manually modified as the source of truth.
