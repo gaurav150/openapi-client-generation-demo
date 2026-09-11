@@ -21,6 +21,8 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import org.openapitools.client.model.Address;
+import org.openapitools.client.model.Name;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,7 +51,7 @@ import org.openapitools.client.JSON;
 /**
  * User
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-10T22:30:08.211429+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2026-09-11T18:04:09.127849+05:30[Asia/Kolkata]", comments = "Generator version: 7.25.0")
 public class User {
   public static final String SERIALIZED_NAME_ID = "id";
   @SerializedName(SERIALIZED_NAME_ID)
@@ -70,6 +72,26 @@ public class User {
   @SerializedName(SERIALIZED_NAME_PASSWORD)
   @javax.annotation.Nullable
   private String password;
+
+  public static final String SERIALIZED_NAME_PHONE = "phone";
+  @SerializedName(SERIALIZED_NAME_PHONE)
+  @javax.annotation.Nullable
+  private String phone;
+
+  public static final String SERIALIZED_NAME_NAME = "name";
+  @SerializedName(SERIALIZED_NAME_NAME)
+  @javax.annotation.Nullable
+  private Name name;
+
+  public static final String SERIALIZED_NAME_ADDRESS = "address";
+  @SerializedName(SERIALIZED_NAME_ADDRESS)
+  @javax.annotation.Nullable
+  private Address address;
+
+  public static final String SERIALIZED_NAME_V = "__v";
+  @SerializedName(SERIALIZED_NAME_V)
+  @javax.annotation.Nullable
+  private Integer v;
 
   public User() {
   }
@@ -150,6 +172,82 @@ public class User {
   }
 
 
+  public User phone(@javax.annotation.Nullable String phone) {
+    this.phone = phone;
+    return this;
+  }
+
+  /**
+   * Get phone
+   * @return phone
+   */
+  @javax.annotation.Nullable
+  public String getPhone() {
+    return phone;
+  }
+
+  public void setPhone(@javax.annotation.Nullable String phone) {
+    this.phone = phone;
+  }
+
+
+  public User name(@javax.annotation.Nullable Name name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
+   * Get name
+   * @return name
+   */
+  @javax.annotation.Nullable
+  public Name getName() {
+    return name;
+  }
+
+  public void setName(@javax.annotation.Nullable Name name) {
+    this.name = name;
+  }
+
+
+  public User address(@javax.annotation.Nullable Address address) {
+    this.address = address;
+    return this;
+  }
+
+  /**
+   * Get address
+   * @return address
+   */
+  @javax.annotation.Nullable
+  public Address getAddress() {
+    return address;
+  }
+
+  public void setAddress(@javax.annotation.Nullable Address address) {
+    this.address = address;
+  }
+
+
+  public User v(@javax.annotation.Nullable Integer v) {
+    this.v = v;
+    return this;
+  }
+
+  /**
+   * Get v
+   * @return v
+   */
+  @javax.annotation.Nullable
+  public Integer getV() {
+    return v;
+  }
+
+  public void setV(@javax.annotation.Nullable Integer v) {
+    this.v = v;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -163,12 +261,16 @@ public class User {
     return Objects.equals(this.id, user.id) &&
         Objects.equals(this.username, user.username) &&
         Objects.equals(this.email, user.email) &&
-        Objects.equals(this.password, user.password);
+        Objects.equals(this.password, user.password) &&
+        Objects.equals(this.phone, user.phone) &&
+        Objects.equals(this.name, user.name) &&
+        Objects.equals(this.address, user.address) &&
+        Objects.equals(this.v, user.v);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, username, email, password);
+    return Objects.hash(id, username, email, password, phone, name, address, v);
   }
 
   @Override
@@ -179,6 +281,10 @@ public class User {
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    phone: ").append(toIndentedString(phone)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
+    sb.append("    v: ").append(toIndentedString(v)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -197,7 +303,7 @@ public class User {
 
   static {
     // a set of all properties/fields (JSON key names)
-    openapiFields = new HashSet<String>(Arrays.asList("id", "username", "email", "password"));
+    openapiFields = new HashSet<String>(Arrays.asList("id", "username", "email", "password", "phone", "name", "address", "__v"));
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>(0);
@@ -232,6 +338,17 @@ public class User {
       }
       if ((jsonObj.get("password") != null && !jsonObj.get("password").isJsonNull()) && !jsonObj.get("password").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `password` to be a primitive type in the JSON string but got `%s`", jsonObj.get("password").toString()));
+      }
+      if ((jsonObj.get("phone") != null && !jsonObj.get("phone").isJsonNull()) && !jsonObj.get("phone").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format(java.util.Locale.ROOT, "Expected the field `phone` to be a primitive type in the JSON string but got `%s`", jsonObj.get("phone").toString()));
+      }
+      // validate the optional field `name`
+      if (jsonObj.get("name") != null && !jsonObj.get("name").isJsonNull()) {
+        Name.validateJsonElement(jsonObj.get("name"));
+      }
+      // validate the optional field `address`
+      if (jsonObj.get("address") != null && !jsonObj.get("address").isJsonNull()) {
+        Address.validateJsonElement(jsonObj.get("address"));
       }
   }
 

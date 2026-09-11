@@ -126,8 +126,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X POST 'https://fakestoreapi.com/products' -H 'Content-Type:\
-          \ application/json' -d '{\"title\": \"New Product\", \"price\": 29.99}'"
+        source: |
+          curl -X POST 'https://fakestoreapi.com/products' -H 'Content-Type: application/json' -d '{"title": "New Product", "price": 29.99}'
       - lang: python
         label: Python
         source: |-
@@ -311,8 +311,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X PUT 'https://fakestoreapi.com/products/1' -H 'Content-Type:\
-          \ application/json' -d '{\"title\": \"Updated Product\", \"price\": 39.99}'"
+        ssource: |
+          curl -X PUT 'https://fakestoreapi.com/products/1' -H 'Content-Type: application/json' -d '{"title": "Updated Product", "price": 39.99}'
       - lang: python
         label: Python
         source: |-
@@ -428,8 +428,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X POST 'https://fakestoreapi.com/carts' -H 'Content-Type: application/json'\
-          \ -d '{\"userId\": 1, \"products\": [{\"id\": 1}]}'"
+        source: |
+          curl -X POST 'https://fakestoreapi.com/carts' -H 'Content-Type: application/json' -d '{"userId": 1, "products": [{"id": 1}]}'
       - lang: python
         label: Python
         source: |-
@@ -613,8 +613,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X PUT 'https://fakestoreapi.com/carts/1' -H 'Content-Type:\
-          \ application/json' -d '{\"userId\": 1, \"products\": [{\"id\": 2}]}'"
+        source: |
+          curl -X PUT 'https://fakestoreapi.com/carts/1' -H 'Content-Type: application/json' -d '{"userId": 1, "products": [{"id": 2}]}'
       - lang: python
         label: Python
         source: |-
@@ -730,9 +730,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X POST 'https://fakestoreapi.com/users' -H 'Content-Type: application/json'\
-          \ -d '{\"username\": \"john_doe\", \"email\": \"john@example.com\", \"password\"\
-          : \"pass123\"}'"
+        source: |
+          curl -X POST ''https://fakestoreapi.com/users'  -H 'Content-Type: application/json'  -d '{"username": "john_doe", "email": "john@example.com","password": "pass123"}'
       - lang: python
         label: Python
         source: |-
@@ -916,9 +915,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X PUT 'https://fakestoreapi.com/users/1' -H 'Content-Type:\
-          \ application/json' -d '{\"username\": \"john_doe_updated\", \"email\":\
-          \ \"john.updated@example.com\"}'"
+        source: |
+          curl -X PUT ''https://fakestoreapi.com/users/1'  -H 'Content-Type: application/json' -d '{"username": "john_doe_updated", "email": "john.updated@example.com"}'
       - lang: python
         label: Python
         source: |-
@@ -985,9 +983,8 @@ paths:
           ?>
       - lang: curl
         label: cURL
-        source: "curl -X POST 'https://fakestoreapi.com/auth/login' -H 'Content-Type:\
-          \ application/json' -d '{\"username\": \"john_doe\", \"password\": \"pass123\"\
-          }'"
+        source: |
+          curl -X POST 'https://fakestoreapi.com/auth/login'  -H 'Content-Type: application/json' -d '{"username": "john_doe", "password": "pass123"}'
       - lang: python
         label: Python
         source: |-
@@ -1008,6 +1005,9 @@ components:
         description: description
         category: category
         image: https://openapi-generator.tech
+        rating:
+          rate: 1.4658129
+          count: 5
       properties:
         id:
           type: integer
@@ -1023,39 +1023,72 @@ components:
         image:
           format: uri
           type: string
+        rating:
+          $ref: "#/components/schemas/Rating"
+    Rating:
+      example:
+        rate: 1.4658129
+        count: 5
+      properties:
+        rate:
+          format: float
+          type: number
+        count:
+          type: integer
     Cart:
       example:
         id: 0
         userId: 6
+        date: 2000-01-23T04:56:07.000+00:00
         products:
-        - id: 0
-          title: title
-          price: 6.0274563
-          description: description
-          category: category
-          image: https://openapi-generator.tech
-        - id: 0
-          title: title
-          price: 6.0274563
-          description: description
-          category: category
-          image: https://openapi-generator.tech
+        - productId: 1
+          quantity: 5
+        - productId: 1
+          quantity: 5
+        __v: 5
       properties:
         id:
           type: integer
         userId:
           type: integer
+        date:
+          format: date-time
+          type: string
         products:
           items:
-            $ref: "#/components/schemas/Product"
+            $ref: "#/components/schemas/CartProduct"
           type: array
           default: null
+        __v:
+          type: integer
+    CartProduct:
+      example:
+        productId: 1
+        quantity: 5
+      properties:
+        productId:
+          type: integer
+        quantity:
+          type: integer
     User:
       example:
         id: 0
         username: username
         email: email
         password: password
+        phone: phone
+        name:
+          firstname: firstname
+          lastname: lastname
+        address:
+          city: city
+          street: street
+          number: 6
+          zipcode: zipcode
+          geolocation:
+            lat: lat
+            long: long
+        __v: 1
       properties:
         id:
           type: integer
@@ -1064,6 +1097,52 @@ components:
         email:
           type: string
         password:
+          type: string
+        phone:
+          type: string
+        name:
+          $ref: "#/components/schemas/Name"
+        address:
+          $ref: "#/components/schemas/Address"
+        __v:
+          type: integer
+    Name:
+      example:
+        firstname: firstname
+        lastname: lastname
+      properties:
+        firstname:
+          type: string
+        lastname:
+          type: string
+    Address:
+      example:
+        city: city
+        street: street
+        number: 6
+        zipcode: zipcode
+        geolocation:
+          lat: lat
+          long: long
+      properties:
+        city:
+          type: string
+        street:
+          type: string
+        number:
+          type: integer
+        zipcode:
+          type: string
+        geolocation:
+          $ref: "#/components/schemas/Geolocation"
+    Geolocation:
+      example:
+        lat: lat
+        long: long
+      properties:
+        lat:
+          type: string
+        long:
           type: string
     Login:
       example:
