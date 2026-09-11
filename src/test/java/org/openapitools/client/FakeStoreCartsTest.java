@@ -161,4 +161,80 @@ public class FakeStoreCartsTest {
             Assert.fail("Get API call failed: " + e.getMessage());
         }
     }
+
+    @Test(description = "verify User get carts data by cartID")
+    public void getCartDetailsByCartId() {
+        try {
+            int cartId = 2;
+            Cart cartDetails = cartsApi.getCartById(cartId);
+            // Validate cart details is not null
+            Assert.assertNotNull(
+                    cartDetails,
+                    "cart details should not be null"
+            );
+
+            Assert.assertEquals(
+                    cartDetails.getId(),
+                    cartId,
+                    "Cart ID should match requested cart ID"
+            );
+        } catch (Exception e) {
+            Assert.fail("Get API call failed: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify User updated cart details successfully")
+    public void updateCartDetails() {
+        try{
+            int cartId = 3;
+            // Create product
+            CartProduct cartProduct = new CartProduct();
+
+            cartProduct.setProductId(2);
+
+            // Create updated cart
+            Cart cart = new Cart();
+            cart.setUserId(1);
+            cart.addProductsItem(cartProduct);
+
+            // Update cart
+            Cart response = cartsApi.updateCart(cartId, cart);
+
+            // Validate response
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+            Assert.assertEquals(
+                    response.getUserId(),
+                    Integer.valueOf(1),
+                    "User ID should match"
+            );
+
+            Assert.assertNotNull(
+                    response.getProducts(),
+                    "Products list should not be null"
+            );
+
+            Assert.assertFalse(
+                    response.getProducts().isEmpty(),
+                    "Products list should not be empty"
+            );
+
+            CartProduct updatedProduct = response.getProducts().get(0);
+
+            Assert.assertEquals(
+                    updatedProduct.getProductId(),
+                    Integer.valueOf(2),
+                    "Product ID should match updated value"
+            );
+
+            System.out.println("Cart ID: " + response.getId());
+            System.out.println("User ID: " + response.getUserId());
+            System.out.println("Updated Product ID: " + updatedProduct.getProductId());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
