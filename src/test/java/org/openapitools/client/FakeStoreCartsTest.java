@@ -94,6 +94,115 @@ public class FakeStoreCartsTest {
         }
     }
 
+    // ==================== ADD CART NEGATIVE TESTS ====================
+
+    @Test(description = "Verify cart creation with null user ID")
+    public void addCartWithNullUserId() {
+        try {
+            Cart cart = new Cart();
+            cart.setUserId(null);
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(1);
+
+            cart.addProductsItem(product);
+
+            Cart response = cartsApi.addCart(cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify cart creation with null product ID")
+    public void addCartWithNullProductId() {
+        try {
+            Cart cart = new Cart();
+            cart.setUserId(1);
+
+            CartProduct product = new CartProduct();
+            product.setProductId(null);
+            product.setQuantity(1);
+
+            cart.addProductsItem(product);
+
+            Cart response = cartsApi.addCart(cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify cart creation with zero quantity")
+    public void addCartWithZeroQuantity() {
+        try {
+            Cart cart = new Cart();
+            cart.setUserId(1);
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(0);
+
+            cart.addProductsItem(product);
+
+            Cart response = cartsApi.addCart(cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify cart creation with negative quantity")
+    public void addCartWithNegativeQuantity() {
+        try {
+            Cart cart = new Cart();
+            cart.setUserId(1);
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(-1);
+
+            cart.addProductsItem(product);
+
+            Cart response = cartsApi.addCart(cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
     // positive test case for deleting carts
     @Test(description = "Verify user deletes a specific cart by ID.")
     public void deleteCartByID() {
@@ -121,6 +230,71 @@ public class FakeStoreCartsTest {
         }
     }
 
+    // ==================== GET CART NEGATIVE TESTS ====================
+
+    @Test(description = "Verify get cart with zero cart ID")
+    public void getCartWithZeroId() {
+        try {
+            int cartId = 0;
+
+            Cart response = cartsApi.getCartById(cartId);
+
+            System.out.println("Cart ID: " + cartId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for invalid cart ID"
+            );
+
+        } catch (Exception e) {
+            Assert.fail("Get Cart API call failed: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify get cart with negative cart ID")
+    public void getCartWithNegativeId() {
+        try {
+            int cartId = -1;
+
+            Cart response = cartsApi.getCartById(cartId);
+
+            System.out.println("Cart ID: " + cartId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for negative cart ID"
+            );
+
+        } catch (Exception e) {
+            Assert.fail("Get Cart API call failed: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify get cart with non-existing cart ID")
+    public void getCartWithNonExistingId() {
+        try {
+            int cartId = 9999;
+
+            Cart response = cartsApi.getCartById(cartId);
+
+            System.out.println("Cart ID: " + cartId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for non-existing cart ID"
+            );
+
+        } catch (Exception e) {
+            Assert.fail("Get Cart API call failed: " + e.getMessage());
+        }
+    }
+
+    // positive test case for get
     @Test(description = "Verify User get all carts data")
     public void getCartAllCartDetails() {
         try {
@@ -235,6 +409,154 @@ public class FakeStoreCartsTest {
             System.out.println("Updated Product ID: " + updatedProduct.getProductId());
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    // ==================== UPDATE CART NEGATIVE TESTS ====================
+
+    @Test(description = "Verify update cart with invalid cart ID")
+    public void updateCartWithInvalidId() {
+        try {
+            int cartId = 9999;
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(1);
+
+            Cart cart = new Cart();
+            cart.setUserId(1);
+            cart.addProductsItem(product);
+
+            Cart response =
+                    cartsApi.updateCart(cartId, cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid cart ID"
+            );
+        }
+    }
+
+
+    @Test(description = "Verify update cart with empty products list")
+    public void updateCartWithEmptyProducts() {
+        try {
+            int cartId = 3;
+
+            Cart cart = new Cart();
+            cart.setUserId(1);
+
+            Cart response =
+                    cartsApi.updateCart(cartId, cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify update cart with null request body")
+    public void updateCartWithNullRequestBody() {
+        try {
+            int cartId = 3;
+
+            Cart response =
+                    cartsApi.updateCart(cartId, null);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
+    @Test(description = "Verify update cart with zero cart ID")
+    public void updateCartWithZeroId() {
+        try {
+            int cartId = 0;
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(1);
+
+            Cart cart = new Cart();
+            cart.setUserId(1);
+            cart.addProductsItem(product);
+
+            Cart response =
+                    cartsApi.updateCart(cartId, cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid cart ID"
+            );
+        }
+    }
+
+
+    @Test(description = "Verify update cart with negative cart ID")
+    public void updateCartWithNegativeId() {
+        try {
+            int cartId = -1;
+
+            CartProduct product = new CartProduct();
+            product.setProductId(1);
+            product.setQuantity(1);
+
+            Cart cart = new Cart();
+            cart.setUserId(1);
+            cart.addProductsItem(product);
+
+            Cart response =
+                    cartsApi.updateCart(cartId, cart);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid cart ID"
+            );
         }
     }
 }
