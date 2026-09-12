@@ -24,6 +24,7 @@ public class FakeStoreProductsTest {
         productsApi = new ProductsApi(apiClient);
     }
 
+    // GET method
     @Test(description = "Verify GET all products API")
     public void getAllProductsTest() {
 
@@ -77,6 +78,7 @@ public class FakeStoreProductsTest {
         }
     }
 
+    // Positive test case for Add User
     @Test(description = "Verify ADD product API")
     public void addProductTest() {
         try {
@@ -103,6 +105,158 @@ public class FakeStoreProductsTest {
         }
     }
 
+    // Negative test case for GET Method Products
+    @Test(description = "Verify GET product API with zero product ID")
+    public void getProductByZeroIdTest() {
+        try {
+            int productId = 0;
+
+            Product response = productsApi.getProductById(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for invalid product ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify GET product API with negative product ID")
+    public void getProductByNegativeIdTest() {
+        try {
+            int productId = -1;
+
+            Product response = productsApi.getProductById(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for negative product ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify GET product API with non-existing product ID")
+    public void getProductByNonExistingIdTest() {
+        try {
+            int productId = 9999;
+
+            Product response = productsApi.getProductById(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for non-existing product ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    // Negative test cases for ADD method
+    @Test(description = "Verify ADD product API with empty request body")
+    public void addEmptyProductTest() {
+        try {
+            Product product = new Product();
+
+            Product response = productsApi.addProduct(product);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify ADD product API without title")
+    public void addProductWithoutTitleTest() {
+        try {
+            Product product = new Product();
+
+            product.setPrice(199.99f);
+            product.setDescription("Product without title");
+            product.setCategory("electronics");
+
+            Product response = productsApi.addProduct(product);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify ADD product API with negative price")
+    public void addProductWithNegativePriceTest() {
+        try {
+            Product product = new Product();
+
+            product.setTitle("Invalid Price Product");
+            product.setPrice(-100.0f);
+            product.setDescription("Product with negative price");
+            product.setCategory("electronics");
+
+            Product response = productsApi.addProduct(product);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify ADD product API without category")
+    public void addProductWithoutCategoryTest() {
+        try {
+            Product product = new Product();
+
+            product.setTitle("Product Without Category");
+            product.setPrice(199.99f);
+            product.setDescription("Product without category");
+
+            Product response = productsApi.addProduct(product);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    // Positive Update Test Case
     @Test(description = "Verify UPDATE product API")
     public void updateProductTest() {
         try {
@@ -134,7 +288,148 @@ public class FakeStoreProductsTest {
         }
     }
 
+    @Test(description = "Verify UPDATE product API with invalid product ID")
+    public void updateProductWithInvalidIdTest() {
+        try {
+            int productId = 9999;
 
+            Product product = new Product();
+
+            product.setTitle("Updated Product");
+            product.setPrice(299.99f);
+            product.setDescription("Updated product");
+            product.setCategory("electronics");
+
+            Product response =
+                    productsApi.updateProduct(productId, product);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid product ID"
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE product API with zero product ID")
+    public void updateProductWithZeroIdTest() {
+        try {
+            int productId = 0;
+
+            Product product = new Product();
+
+            product.setTitle("Updated Product");
+            product.setPrice(299.99f);
+            product.setDescription("Updated product");
+            product.setCategory("electronics");
+
+            Product response =
+                    productsApi.updateProduct(productId, product);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid product ID"
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE product API with negative product ID")
+    public void updateProductWithNegativeIdTest() {
+        try {
+            int productId = -1;
+
+            Product product = new Product();
+
+            product.setTitle("Updated Product");
+            product.setPrice(299.99f);
+            product.setDescription("Updated product");
+            product.setCategory("electronics");
+
+            Product response =
+                    productsApi.updateProduct(productId, product);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid product ID"
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE product API with empty request body")
+    public void updateProductWithEmptyBodyTest() {
+        try {
+            int productId = 1;
+
+            Product product = new Product();
+
+            Product response =
+                    productsApi.updateProduct(productId, product);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify UPDATE product API with null request body")
+    public void updateProductWithNullBodyTest() {
+        try {
+            int productId = 1;
+
+            Product response =
+                    productsApi.updateProduct(productId, null);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+    // positive test case for Delete
     @Test(description = "Verify DELETE product API and HTTP status code")
     public void deleteProductTest() throws Exception {
 
@@ -164,6 +459,91 @@ public class FakeStoreProductsTest {
         );
     }
 
+    // Negative test cases for Delete test cases
+    @Test(description = "Verify DELETE product API with negative product ID")
+    public void deleteProductWithNegativeIdTest() {
+        try {
+            int productId = -1;
+
+            ApiResponse<Void> response =
+                    productsApi.deleteProductWithHttpInfo(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Headers: " + response.getHeaders());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "Delete response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid product ID"
+            );
+        }
+    }
+
+    @Test(description = "Verify DELETE product API with zero product ID")
+    public void deleteProductWithZeroIdTest() {
+        try {
+            int productId = 0;
+
+            ApiResponse<Void> response =
+                    productsApi.deleteProductWithHttpInfo(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Headers: " + response.getHeaders());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "Delete response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for invalid product ID"
+            );
+        }
+    }
+
+
+    @Test(description = "Verify DELETE product API with non-existing product ID")
+    public void deleteNonExistingProductTest() {
+        try {
+            int productId = 9999;
+
+            ApiResponse<Void> response =
+                    productsApi.deleteProductWithHttpInfo(productId);
+
+            System.out.println("Product ID: " + productId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Headers: " + response.getHeaders());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "Delete response should not be null"
+            );
+
+        } catch (ApiException e) {
+            System.out.println("Status Code: " + e.getCode());
+
+            Assert.assertTrue(
+                    e.getCode() == 400 || e.getCode() == 404,
+                    "Expected 400 or 404 for non-existing product"
+            );
+        }
+    }
 
     @Test(
             description = "Verify GET product API with invalid product ID"
