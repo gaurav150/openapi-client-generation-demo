@@ -1,6 +1,5 @@
 package org.openapitools.client;
 
-
 import org.jetbrains.annotations.NotNull;
 import org.openapitools.client.api.UsersApi;
 import org.openapitools.client.model.Name;
@@ -61,6 +60,100 @@ public class FakeStoreUsersTest {
         }
     }
 
+    // Negative test cases for GET User API with invalid user IDs
+    @Test(description = "Verify GET user API with zero user ID")
+    public void getUserWithZeroId() {
+        try {
+            int userId = 0;
+
+            User response = usersApi.getUserById(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for invalid user ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected behavior for invalid user ID: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify GET user API with negative user ID")
+    public void getUserWithNegativeId() {
+        try {
+            int userId = -1;
+
+            User response = usersApi.getUserById(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for negative user ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected behavior for invalid user ID: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify GET user API with non-existing user ID")
+    public void getUserWithNonExistingId() {
+        try {
+            int userId = 9999;
+
+            User response = usersApi.getUserById(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Response: " + response);
+
+            Assert.assertNull(
+                    response,
+                    "Response should be null for non-existing user ID"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected behavior for non-existing user ID: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify GET user API returns expected response for invalid user ID")
+    public void getUserWithInvalidIdAndStatusCode() {
+        try {
+            int userId = 9999;
+
+            ApiResponse<User> response =
+                    usersApi.getUserByIdWithHttpInfo(userId);
+
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+            Assert.assertEquals(
+                    response.getStatusCode(),
+                    200,
+                    "Expected status code should be 200 for FakeStoreAPI"
+            );
+
+            Assert.assertNull(
+                    response.getData(),
+                    "Response data should be null for non-existing user"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception: " + e.getMessage());
+        }
+    }
+
+
     @Test
     public void testName() {
         Name name = new Name();
@@ -73,6 +166,7 @@ public class FakeStoreUsersTest {
         Assert.assertEquals(name.getLastname(), "Kumar");
     }
 
+    // Positive test case for POST User API with valid request data
     @Test(description = "Verify User added successfully")
     public void addUserSuccessfully() {
         try {
@@ -107,6 +201,102 @@ public class FakeStoreUsersTest {
         }
     }
 
+    // Negative test cases for POST User API with invalid request data
+    @Test(description = "Verify POST user API with empty request body")
+    public void addUserWithEmptyRequestBody() {
+        try {
+            User user = new User();
+
+            User response = usersApi.addUser(user);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception for empty request body: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify POST user API with missing email")
+    public void addUserWithMissingEmail() {
+        try {
+            User user = getCreateUser(
+                    "Rohit",
+                    "Kumar",
+                    null,
+                    "qwerty",
+                    "1234567890"
+            );
+
+            User response = usersApi.addUser(user);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception for missing email: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify POST user API with missing password")
+    public void addUserWithMissingPassword() {
+        try {
+            User user = getCreateUser(
+                    "Rohit",
+                    "Kumar",
+                    "rohit@gmail.com",
+                    null,
+                    "1234567890"
+            );
+
+            User response = usersApi.addUser(user);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception for missing password: " + e.getMessage());
+        }
+    }
+
+    @Test(description = "Verify POST user API with missing phone")
+    public void addUserWithMissingPhone() {
+        try {
+            User user = getCreateUser(
+                    "Rohit",
+                    "Kumar",
+                    "rohit@gmail.com",
+                    "qwerty",
+                    null
+            );
+
+            User response = usersApi.addUser(user);
+
+            System.out.println("Response: " + response);
+
+            Assert.assertNotNull(
+                    response,
+                    "Response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println("Expected exception for missing phone: " + e.getMessage());
+        }
+    }
+
+
     @Test(description = "Verify retrieval of a single user")
     public void verifySingleUserDetails() {
         try {
@@ -131,6 +321,7 @@ public class FakeStoreUsersTest {
         }
     }
 
+    // Positive test case for PUT User API with valid user ID and request data
     @Test(description = "Verify user details are updated successfully")
     public void verifyingSingleUserUpdateDetails() {
         try {
@@ -200,6 +391,119 @@ public class FakeStoreUsersTest {
         }
     }
 
+    // Negative test cases for PUT User API with invalid user IDs and request data
+    @Test(description = "Verify UPDATE user API with non-existing user ID")
+    public void updateUserWithNonExistingId() {
+        try {
+            int userId = 9999;
+
+            User user = getCreateUser(
+                    "Invalid",
+                    "User",
+                    "invalid@gmail.com",
+                    "password",
+                    "1234567890"
+            );
+
+            ApiResponse<User> response =
+                    usersApi.updateUserWithHttpInfo(userId, user);
+
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for non-existing user ID: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE user API with zero user ID")
+    public void updateUserWithZeroId() {
+        try {
+            int userId = 0;
+
+            User user = getCreateUser(
+                    "Test",
+                    "User",
+                    "test@gmail.com",
+                    "password",
+                    "1234567890"
+            );
+
+            ApiResponse<User> response =
+                    usersApi.updateUserWithHttpInfo(userId, user);
+
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for zero user ID: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE user API with negative user ID")
+    public void updateUserWithNegativeId() {
+        try {
+            int userId = -1;
+
+            User user = getCreateUser(
+                    "Test",
+                    "User",
+                    "test@gmail.com",
+                    "password",
+                    "1234567890"
+            );
+
+            ApiResponse<User> response =
+                    usersApi.updateUserWithHttpInfo(userId, user);
+
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for negative user ID: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    @Test(description = "Verify UPDATE user API with empty request body")
+    public void updateUserWithEmptyBody() {
+        try {
+            int userId = 2;
+
+            User user = new User();
+
+            ApiResponse<User> response =
+                    usersApi.updateUserWithHttpInfo(userId, user);
+
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for empty request body: "
+                            + e.getMessage()
+            );
+        }
+    }
+
     @Test(description = "Verify user details are deleted successfully")
     public void verifyUserDataDeleted() {
         try {
@@ -225,6 +529,82 @@ public class FakeStoreUsersTest {
             );
         } catch (Exception e) {
             Assert.fail("GET API for user account creation call failed: " + e.getMessage());
+        }
+    }
+
+    // Negative test cases for DELETE User API with invalid user IDs
+    @Test(description = "Verify DELETE user API with zero user ID")
+    public void deleteUserWithZeroId() {
+        try {
+            int userId = 0;
+
+            ApiResponse<Void> response =
+                    usersApi.deleteUserWithHttpInfo(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for zero user ID: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    @Test(description = "Verify DELETE user API with negative user ID")
+    public void deleteUserWithNegativeId() {
+        try {
+            int userId = -1;
+
+            ApiResponse<Void> response =
+                    usersApi.deleteUserWithHttpInfo(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for negative user ID: "
+                            + e.getMessage()
+            );
+        }
+    }
+
+    @Test(description = "Verify DELETE user API with non-existing user ID")
+    public void deleteUserWithNonExistingId() {
+        try {
+            int userId = 9999;
+
+            ApiResponse<Void> response =
+                    usersApi.deleteUserWithHttpInfo(userId);
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Status Code: " + response.getStatusCode());
+            System.out.println("Response Data: " + response.getData());
+
+            Assert.assertNotNull(
+                    response,
+                    "API response should not be null"
+            );
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Expected exception for non-existing user ID: "
+                            + e.getMessage()
+            );
         }
     }
 
