@@ -8,17 +8,9 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build & Test') {
             steps {
-                dir('generated-client') {
-                    sh 'mvn clean test'
-                }
+                sh 'mvn clean test'
             }
         }
     }
@@ -26,7 +18,7 @@ pipeline {
     post {
 
         always {
-            junit 'generated-client/target/surefire-reports/*.xml'
+            junit 'target/surefire-reports/*.xml'
         }
 
         success {
