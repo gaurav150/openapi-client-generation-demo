@@ -1143,3 +1143,9 @@ git push
 ```
 
 > **Important:** The YAML schema should be updated first. The generated Java client should be treated as a result of the OpenAPI specification, not manually modified as the source of truth.
+
+## Notes Added for OpenAPI 
+
+```bash
+cd /Users/gaurav/Documents/workspace/openAPITask/generated-client/src/main/resources/OpenAPINotes
+```
